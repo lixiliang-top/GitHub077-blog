@@ -32,7 +32,7 @@ public class UserServiceImpl implements UsersService {
         UsersExample.Criteria criteria = example.createCriteria();
         criteria.andNicknameEqualTo(nickname);
         List<Users> users1 = usersMapper.selectByExample(example);
-        if (users1!=null&&users1.size()>0){
+        if (users1 != null && users1.size() > 0) {
             users = users1.get(0);
         }
         return users;
@@ -43,4 +43,18 @@ public class UserServiceImpl implements UsersService {
         usersMapper.insert(users);
     }
 
+    @Override
+    public List<Users> USERS() {
+        return usersMapper.selectByExample(null);
+    }
+
+    @Override
+    public Users getUser(int id) {
+        return usersMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public int update(Users users) {
+        return usersMapper.updateByPrimaryKeySelective(users);
+    }
 }

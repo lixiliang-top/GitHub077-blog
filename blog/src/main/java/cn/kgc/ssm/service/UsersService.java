@@ -2,6 +2,8 @@ package cn.kgc.ssm.service;
 
 import cn.kgc.ssm.pojo.Users;
 
+import java.util.List;
+
 
 /**
  * @author 李锡良
@@ -17,5 +19,14 @@ public interface UsersService {
     Users login(String nickname);
 
     void add(Users users);
+
+    //春夏
+    List<Users> USERS();
+
+    //根据id查找对象
+    Users getUser(int id);
+
+    //修改
+    int update(Users users);
 
 }

@@ -4,6 +4,7 @@ import cn.kgc.ssm.pojo.Blog;
 import cn.kgc.ssm.pojo.Users;
 import cn.kgc.ssm.service.BlogService;
 import cn.kgc.ssm.service.UsersService;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.math.RandomUtils;
@@ -75,7 +76,7 @@ public class UsersController {
 
     @RequestMapping("/addUser")
     public String addUser(Users users, MultipartFile pic, HttpSession session, HttpServletRequest request){
-        String realPath = session.getServletContext().getRealPath("statics/images");
+        String realPath = session.getServletContext().getRealPath("statics/uploadfiles");
         String originalFilename = pic.getOriginalFilename();
         String extension = FilenameUtils.getExtension(originalFilename);
         String fileName=System.currentTimeMillis()+ RandomUtils.nextInt(10000)+"_."+extension;
@@ -85,7 +86,7 @@ public class UsersController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        users.setPicpath(realPath+fileName);
+        users.setPicpath(fileName);
         usersService.add(users);
         return "redirect:/";
     }
@@ -99,4 +100,56 @@ public class UsersController {
         blogService.add(blog);
         return "/jsp/index2";
     }
+
+    @RequestMapping("/toindex2")
+    public String toindex2() {
+        return "/jsp/index2";
+    }
+
+    @RequestMapping("/tousers")
+    public String string() {
+        return "/jsp/users";
+    }
+
+    @RequestMapping("/dousers")
+    @ResponseBody
+    public Map<String, Object> dousers(Integer pageIndex, Integer pageSize, HttpSession session) throws Exception {
+        Map<String, Object> map = new HashMap<>();
+        String order = "id desc";
+        PageHelper.startPage(pageIndex, pageSize, order);
+        List<Users> users = usersService.USERS();
+        PageInfo<Users> pageInfo = new PageInfo<>(users);
+        map.put("pageInfo", pageInfo);
+        Users usersnum = (Users) session.getAttribute("userSession");
+        map.put("usernum", usersnum.getSupper());
+        map.put("userid", usersnum.getId());
+        return map;
+    }
+
+    @RequestMapping("/toupdate")
+    public String toupdate(Integer id, HttpSession session) {
+        Users users = usersService.getUser(id);
+        session.setAttribute("userA", users);
+        return "/jsp/update";
+    }
+
+    @RequestMapping("/doupdate")
+    public String doupdate(String nickname, String password, HttpSession session) {
+        if (nickname.length() == 0 || password.length() == 0) {
+            session.setAttribute("error1", "必填项未填写！!");
+            return "redirect:/toupdate";
+        }
+        Users userB = (Users) session.getAttribute("userSession");
+        userB.setNickname(nickname);
+        userB.setPassword(password);
+        int a = usersService.update(userB);
+        if (a > 0) {
+            return "/jsp/users";
+        } else {
+            session.setAttribute("error1", "修改失败!");
+            return "redirect:/toupdate";
+        }
+
+    }
+
 }
