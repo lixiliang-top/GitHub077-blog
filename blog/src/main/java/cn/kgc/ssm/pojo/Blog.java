@@ -1,5 +1,7 @@
 package cn.kgc.ssm.pojo;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class Blog {
@@ -7,6 +9,7 @@ public class Blog {
 
     private String content;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date publishtime;
 
     private Integer userid;

@@ -5,14 +5,21 @@ import cn.kgc.ssm.pojo.Users;
 import cn.kgc.ssm.service.BlogService;
 import cn.kgc.ssm.service.UsersService;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +53,7 @@ public class UsersController {
             return "/jsp/index";
         }else{
             session.setAttribute("userSession",login1);
+            session.setAttribute("id",login1.getId());
             return "/jsp/index2";
         }
     }
@@ -60,6 +68,35 @@ public class UsersController {
         map.put("data",pageInfo);
         return map;
     }
+    @RequestMapping("/insertuser")
+    public String insertuser(){
+        return "/jsp/adduser";
+    }
 
+    @RequestMapping("/addUser")
+    public String addUser(Users users, MultipartFile pic, HttpSession session, HttpServletRequest request){
+        String realPath = session.getServletContext().getRealPath("statics/images");
+        String originalFilename = pic.getOriginalFilename();
+        String extension = FilenameUtils.getExtension(originalFilename);
+        String fileName=System.currentTimeMillis()+ RandomUtils.nextInt(10000)+"_."+extension;
+        File file=new File(realPath,fileName);
+        try {
+            pic.transferTo(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        users.setPicpath(realPath+fileName);
+        usersService.add(users);
+        return "redirect:/";
+    }
+    @RequestMapping("/insertblog")
+    public String insertblog(){
+        return "/jsp/addblog";
+    }
 
+    @RequestMapping("/addBlog")
+    public String addBlog(Blog blog,Model model){
+        blogService.add(blog);
+        return "/jsp/index2";
+    }
 }

@@ -16,4 +16,6 @@ public interface UsersService {
      */
     Users login(String nickname);
 
+    void add(Users users);
+
 }

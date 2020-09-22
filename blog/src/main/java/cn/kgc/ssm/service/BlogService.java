@@ -16,4 +16,6 @@ public interface BlogService {
      */
     List<Blog> bList(Integer pageIndex, Integer pageSize);
 
+    void add(Blog blog);
+
 }

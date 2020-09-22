@@ -31,4 +31,9 @@ public class BlogServiceImpl implements BlogService {
         PageHelper.orderBy("id desc");
         return blogs;
     }
+
+    @Override
+    public void add(Blog blog) {
+        blogMapper.insert(blog);
+    }
 }

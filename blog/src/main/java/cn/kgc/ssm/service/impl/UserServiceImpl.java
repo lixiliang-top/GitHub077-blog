@@ -38,4 +38,9 @@ public class UserServiceImpl implements UsersService {
         return users;
     }
 
+    @Override
+    public void add(Users users) {
+        usersMapper.insert(users);
+    }
+
 }

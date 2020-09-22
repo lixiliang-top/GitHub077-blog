@@ -14,6 +14,8 @@
 <div>
    <div align="center">
        <span>${userSession.username}你好！欢迎访问微博信息管理系统！</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)">注销</a>
+       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/insertuser">添加用户</a>
+       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/insertblog">添加微博信息</a>
    </div>
     <table class="table-fenye" width="800" border="1" align="center">
         <tr align="center">
