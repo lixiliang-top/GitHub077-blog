@@ -151,5 +151,15 @@ public class UsersController {
         }
 
     }
+    @RequestMapping("/delUsers{id}")
+
+    public  String delUsers(Integer id,HttpSession session){
+        int delUser = usersService.delUser(id);
+        int re=1;
+        session.setAttribute("re",re);
+
+
+        return "jsp/users";
+    }
 
 }

@@ -29,4 +29,5 @@ public interface UsersService {
     //修改
     int update(Users users);
 
+    int delUser(Integer id);
 }
